@@ -1,0 +1,108 @@
+# Deploys the site to Cloudflare. A push to main goes live on webthinking.io; a push to any
+# other branch uploads a version with its own preview URL and leaves the live site alone.
+#
+# It needs two repository secrets: CLOUDFLARE_API_TOKEN, a token made from Cloudflare's
+# "Edit Cloudflare Workers" template, and CLOUDFLARE_ACCOUNT_ID.
+name: Deploy
+run-name: ${{ github.ref_name == 'main' && 'Deploy to webthinking.io' || format('Preview {0}', github.ref_name) }}
+
+on:
+  push:
+  workflow_dispatch:
+
+# One run per branch. A newer push to a branch replaces its running preview, but a
+# deploy to main is never cancelled halfway.
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+
+permissions:
+  contents: read
+
+env:
+  NODE_VERSION: '24'
+
+jobs:
+  check:
+    name: Check the site
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - run: node --check worker.js
+      - run: node scripts/check.mjs
+
+  preview:
+    name: Preview this branch
+    needs: check
+    if: github.ref != 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - name: Upload a version with a preview URL
+        id: upload
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          BRANCH: ${{ github.ref_name }}
+          SHA: ${{ github.sha }}
+        run: |
+          # A DNS-safe alias from the branch name, short enough for the Worker's name to follow it.
+          alias=$(printf '%s' "$BRANCH" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9]/-/g; s/--*/-/g; s/^-//' | cut -c1-40 | sed 's/-$//')
+          out=$(npx wrangler@4 versions upload --preview-alias "$alias" --message "${SHA:0:7} on $BRANCH")
+          echo "$out"
+          url=$(printf '%s\n' "$out" | sed -n 's/^Version Preview Alias URL: //p')
+          [ -n "$url" ] || { echo '::error::wrangler printed no preview URL'; exit 1; }
+          echo "url=$url" >> "$GITHUB_OUTPUT"
+          echo "Preview for \`$BRANCH\`: $url" >> "$GITHUB_STEP_SUMMARY"
+      - name: Say so on the pull request, if there is one
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BRANCH: ${{ github.ref_name }}
+          URL: ${{ steps.upload.outputs.url }}
+        run: |
+          pr=$(gh pr list --head "$BRANCH" --state open --json number --jq '.[0].number // empty')
+          if [ -n "$pr" ]; then
+            gh pr comment "$pr" --body "Preview: $URL"
+          fi
+
+  deploy:
+    name: Deploy to webthinking.io
+    needs: check
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment:
+      name: webthinking.io
+      url: https://webthinking.io
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - name: Deploy
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: npx wrangler@4 deploy
+      - name: Check the live site
+        run: |
+          for i in 1 2 3 4 5 6; do
+            if curl -fsS https://webthinking.io/ | grep -q '<title>webthinking'; then
+              echo 'webthinking.io is serving the site'
+              exit 0
+            fi
+            sleep 5
+          done
+          echo '::error::webthinking.io did not serve the site after the deploy'
+          exit 1
