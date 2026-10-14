@@ -23,11 +23,30 @@
   --shadow: 0 1px 2px rgba(23, 24, 28, 0.06), 0 12px 32px -18px rgba(23, 24, 28, 0.25);
   --radius: 22px;
   --gap: clamp(12px, 1.6vw, 18px);
-  color-scheme: light dark;
+  color-scheme: light;
+}
+
+/* Dark is the default. The page sets data-theme to dark, light or system
+   (follow the device) before it paints, from the visitor's saved choice. */
+:root[data-theme="dark"] {
+  --bg: #101114;
+  --tile: #191b20;
+  --tile-2: #22252c;
+  --line: #2b2e36;
+  --text: #f1efe9;
+  --muted: #a3a6b1;
+  --accent: #ff6a4d;
+  --accent-ink: #16171b;
+  --g1: #ff6a4d;
+  --g2: #f0509f;
+  --g3: #a58bff;
+  --logo-bg: #22252c;
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 16px 40px -20px rgba(0, 0, 0, 0.8);
+  color-scheme: dark;
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root[data-theme="system"] {
     --bg: #101114;
     --tile: #191b20;
     --tile-2: #22252c;
@@ -41,6 +60,7 @@
     --g3: #a58bff;
     --logo-bg: #22252c;
     --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 16px 40px -20px rgba(0, 0, 0, 0.8);
+    color-scheme: light dark;
   }
 }
 
@@ -136,23 +156,6 @@ h1 {
   color: var(--muted);
 }
 
-.facts {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin: 28px 0 0;
-  padding: 0;
-  list-style: none;
-}
-
-.facts li {
-  padding: 5px 12px;
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  font-size: 14px;
-  font-weight: 500;
-}
-
 .maker {
   margin: 28px 0 0;
   font-size: 15px;
@@ -165,6 +168,67 @@ h1 {
   text-decoration-color: var(--accent);
   text-decoration-thickness: 2px;
   text-underline-offset: 4px;
+}
+
+/* ---------- Theme switch ---------- */
+
+.theme {
+  display: inline-flex;
+  margin-top: 28px;
+  padding: 3px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+}
+
+.theme button {
+  min-height: 36px;
+  padding: 6px 14px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.theme button:hover {
+  color: var(--text);
+}
+
+.theme button[aria-pressed="true"] {
+  background: var(--text);
+  color: var(--bg);
+}
+
+/* The switch needs JavaScript, and so does remembering the choice. */
+html:not(.js) .theme {
+  display: none;
+}
+
+/* A screenshot for each theme; only the matching one shows. */
+.img-dark {
+  display: none !important;
+}
+
+:root[data-theme="dark"] .img-light {
+  display: none !important;
+}
+
+:root[data-theme="dark"] .img-dark {
+  display: block !important;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root[data-theme="system"] .img-light {
+    display: none !important;
+  }
+
+  :root[data-theme="system"] .img-dark {
+    display: block !important;
+  }
 }
 
 /* ---------- Tiles ---------- */
