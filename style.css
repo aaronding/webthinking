@@ -1,0 +1,421 @@
+/* webthinking.io: the tools site. */
+
+@font-face {
+  font-family: "Space Grotesk";
+  src: url("/fonts/space-grotesk.woff2") format("woff2");
+  font-weight: 300 700;
+  font-display: swap;
+}
+
+:root {
+  --bg: #f4f2ec;
+  --tile: #ffffff;
+  --tile-2: #ebe8df;
+  --line: #e0dccf;
+  --text: #17181c;
+  --muted: #5d5f68;
+  --accent: #e8452c;
+  --accent-ink: #ffffff;
+  --g1: #e8452c;
+  --g2: #d02a8a;
+  --g3: #6d4cff;
+  --logo-bg: #17181c;
+  --shadow: 0 1px 2px rgba(23, 24, 28, 0.06), 0 12px 32px -18px rgba(23, 24, 28, 0.25);
+  --radius: 22px;
+  --gap: clamp(12px, 1.6vw, 18px);
+  color-scheme: light dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #101114;
+    --tile: #191b20;
+    --tile-2: #22252c;
+    --line: #2b2e36;
+    --text: #f1efe9;
+    --muted: #a3a6b1;
+    --accent: #ff6a4d;
+    --accent-ink: #16171b;
+    --g1: #ff6a4d;
+    --g2: #f0509f;
+    --g3: #a58bff;
+    --logo-bg: #22252c;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 16px 40px -20px rgba(0, 0, 0, 0.8);
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Space Grotesk", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 17px;
+  line-height: 1.5;
+}
+
+a {
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/* ---------- Layout: brand panel + tool shelf ---------- */
+
+.page {
+  display: grid;
+  grid-template-columns: minmax(260px, 340px) minmax(0, 1fr);
+  gap: clamp(28px, 4vw, 64px);
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: clamp(20px, 4vw, 56px);
+}
+
+.intro {
+  position: sticky;
+  top: clamp(20px, 4vw, 56px);
+  align-self: start;
+}
+
+.mark {
+  display: block;
+  width: 88px;
+  height: 88px;
+  margin: 0 0 28px;
+}
+
+.mark-tile {
+  fill: var(--logo-bg);
+}
+
+/* The W is cut out of the web, so the cut matches the tile. */
+.mark .ko-f {
+  fill: var(--logo-bg);
+  stroke: var(--logo-bg);
+}
+
+.mark .ko-s {
+  stroke: var(--logo-bg);
+}
+
+/* "web" in the text colour, "thinking" stepping from orange to violet. */
+.think {
+  background: linear-gradient(90deg, var(--g1), var(--g2) 55%, var(--g3));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: var(--g2);
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(2.6rem, 5vw, 3.6rem);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.045em;
+}
+
+.pitch {
+  max-width: 16ch;
+  margin: 14px 0 0;
+  font-size: clamp(1.35rem, 2.2vw, 1.7rem);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--muted);
+}
+
+.facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 28px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.facts li {
+  padding: 5px 12px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.maker {
+  margin: 28px 0 0;
+  font-size: 15px;
+  color: var(--muted);
+}
+
+.maker a {
+  color: var(--text);
+  font-weight: 600;
+  text-decoration-color: var(--accent);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+
+/* ---------- Tiles ---------- */
+
+.shelf {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  grid-auto-flow: dense;
+  gap: var(--gap);
+}
+
+.tile {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(20px, 2.4vw, 28px);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--tile);
+  box-shadow: var(--shadow);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.tile:hover {
+  transform: translateY(-3px);
+}
+
+/* Scorpion Solitaire gets the larger share of the row, gcwind the narrower one. */
+.tile-wide {
+  grid-column: span 4;
+  display: flex;
+  flex-direction: column;
+}
+
+.tile-tall {
+  grid-column: span 2;
+  display: flex;
+  flex-direction: column;
+}
+
+.tile-feature {
+  grid-column: span 6;
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  gap: clamp(20px, 3vw, 40px);
+  align-items: center;
+}
+
+.tile-feature .shot {
+  align-self: stretch;
+  margin: calc(-1 * clamp(20px, 2.4vw, 28px)) calc(-1 * clamp(20px, 2.4vw, 28px)) calc(-1 * clamp(20px, 2.4vw, 28px)) 0;
+  padding-top: clamp(20px, 2.4vw, 28px);
+  padding-bottom: clamp(20px, 2.4vw, 28px);
+}
+
+.tile-link {
+  grid-column: span 6;
+}
+
+.game {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.tile h2 {
+  margin: 6px 0 6px;
+  font-size: clamp(1.6rem, 2.4vw, 2rem);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+}
+
+.tile p {
+  margin: 0;
+}
+
+.tile-text > p:not(.game):not(.actions) {
+  max-width: 34ch;
+  color: var(--muted);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+  margin-top: 18px !important;
+}
+
+.go {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 10px 20px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: var(--accent-ink);
+  font-weight: 600;
+  text-decoration: none;
+  transition: transform 0.2s ease;
+}
+
+.go:hover {
+  transform: translateX(3px);
+}
+
+.src {
+  color: var(--muted);
+  font-size: 15px;
+  text-underline-offset: 4px;
+}
+
+/* Screenshots sit at the bottom of their tile, cropped by the tile's edge. */
+.shot {
+  flex: 1;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  margin: 24px calc(-1 * clamp(20px, 2.4vw, 28px)) calc(-1 * clamp(20px, 2.4vw, 28px));
+  padding: 0 clamp(20px, 2.4vw, 28px);
+  background: var(--tile-2);
+  min-height: 220px;
+}
+
+.shot img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 14px 14px 0 0;
+  transition: transform 0.4s ease;
+}
+
+.shot-phone img {
+  width: min(82%, 300px);
+  margin-top: 28px;
+  border: 6px solid var(--text);
+  border-bottom: 0;
+  border-radius: 30px 30px 0 0;
+}
+
+.shot-screen {
+  align-items: center;
+  padding-top: 28px;
+  padding-bottom: 28px;
+}
+
+.shot-screen img {
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+}
+
+.tile:hover .shot img {
+  transform: translateY(-4px);
+}
+
+.tile-link {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px 18px;
+  text-decoration: none;
+  background: var(--text);
+  color: var(--bg);
+  border-color: var(--text);
+}
+
+.tile-link .game {
+  color: inherit;
+  opacity: 0.7;
+}
+
+.link-title {
+  font-size: clamp(1.3rem, 2vw, 1.6rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+.foot {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 clamp(20px, 4vw, 56px) 40px;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.foot p {
+  margin: 0;
+}
+
+/* ---------- Narrow screens ---------- */
+
+@media (max-width: 1100px) {
+  .tile-tall,
+  .tile-wide,
+  .tile-link {
+    grid-column: span 6;
+    grid-row: auto;
+  }
+
+  .tile-feature {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+  }
+
+  .tile-feature .shot {
+    margin: 24px calc(-1 * clamp(20px, 2.4vw, 28px)) calc(-1 * clamp(20px, 2.4vw, 28px));
+  }
+
+  .tile-tall .shot,
+  .tile-wide .shot,
+  .tile-feature .shot {
+    min-height: 0;
+  }
+}
+
+@media (max-width: 860px) {
+  .page {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .intro {
+    position: static;
+  }
+
+  .pitch {
+    max-width: 22ch;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+  }
+}
+
+@media (forced-colors: active) {
+  .think {
+    background: none;
+    -webkit-text-fill-color: currentColor;
+    color: CanvasText;
+  }
+
+  .go,
+  .tile-link {
+    border: 1px solid ButtonText;
+  }
+}
