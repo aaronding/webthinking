@@ -8,10 +8,10 @@
 }
 
 :root {
-  --bg: #f4f2ec;
+  --bg: #eceae3;
   --tile: #ffffff;
-  --tile-2: #ebe8df;
-  --line: #e0dccf;
+  --tile-2: #fbf6ec;
+  --line: #dcd8cc;
   --text: #17181c;
   --muted: #5d5f68;
   --accent: #e8452c;
@@ -23,16 +23,18 @@
   --shadow: 0 1px 2px rgba(23, 24, 28, 0.06), 0 12px 32px -18px rgba(23, 24, 28, 0.25);
   --radius: 22px;
   --gap: clamp(12px, 1.6vw, 18px);
+  --pad: clamp(20px, 4vw, 56px);
+  --web: 0.42;
   color-scheme: light;
 }
 
-/* Dark is the default. The page sets data-theme to dark, light or system
+/* Light is the default. The page sets data-theme to light, dark or system
    (follow the device) before it paints, from the visitor's saved choice. */
 :root[data-theme="dark"] {
-  --bg: #101114;
-  --tile: #191b20;
-  --tile-2: #22252c;
-  --line: #2b2e36;
+  --bg: #0c0d10;
+  --tile: #1d1f25;
+  --tile-2: #272c36;
+  --line: #30333b;
   --text: #f1efe9;
   --muted: #a3a6b1;
   --accent: #ff6a4d;
@@ -41,16 +43,17 @@
   --g2: #f0509f;
   --g3: #a58bff;
   --logo-bg: #22252c;
+  --web: 0.6;
   --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 16px 40px -20px rgba(0, 0, 0, 0.8);
   color-scheme: dark;
 }
 
 @media (prefers-color-scheme: dark) {
   :root[data-theme="system"] {
-    --bg: #101114;
-    --tile: #191b20;
-    --tile-2: #22252c;
-    --line: #2b2e36;
+    --bg: #0c0d10;
+    --tile: #1d1f25;
+    --tile-2: #272c36;
+    --line: #30333b;
     --text: #f1efe9;
     --muted: #a3a6b1;
     --accent: #ff6a4d;
@@ -59,6 +62,7 @@
     --g2: #f0509f;
     --g3: #a58bff;
     --logo-bg: #22252c;
+    --web: 0.6;
     --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 16px 40px -20px rgba(0, 0, 0, 0.8);
     color-scheme: light dark;
   }
@@ -94,23 +98,97 @@ a {
 
 /* ---------- Layout: brand panel + tool shelf ---------- */
 
+/* On wide screens the left column is a panel the height of the window: the
+   name at the top, the theme switch and credits at the bottom, and a web
+   drawn behind the space between. All three share the column's one grid
+   area, so each can stick for the whole length of the page. */
 .page {
   display: grid;
   grid-template-columns: minmax(260px, 340px) minmax(0, 1fr);
   gap: clamp(28px, 4vw, 64px);
   max-width: 1280px;
+  min-height: 100vh;
+  min-height: 100svh;
   margin: 0 auto;
-  padding: clamp(20px, 4vw, 56px);
+  padding: var(--pad);
+}
+
+.web,
+.intro,
+.foot {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.shelf {
+  grid-column: 2;
+  grid-row: 1;
 }
 
 .intro {
   position: sticky;
-  top: clamp(20px, 4vw, 56px);
+  top: var(--pad);
   align-self: start;
+}
+
+.web {
+  position: sticky;
+  top: var(--pad);
+  align-self: start;
+  width: calc(100% + var(--pad));
+  height: calc(100vh - 2 * var(--pad));
+  height: calc(100svh - 2 * var(--pad));
+  margin-left: calc(-1 * var(--pad));
+  pointer-events: none;
+  opacity: var(--web);
+}
+
+.web path {
+  fill: none;
+  stroke: url(#webg);
+  stroke-width: 1.2;
+  stroke-linecap: round;
+}
+
+.web stop:nth-child(1) { stop-color: var(--g1); }
+.web stop:nth-child(2) { stop-color: var(--g2); }
+.web stop:nth-child(3) { stop-color: var(--g3); }
+
+.web-knots {
+  fill: #ffb547;
+}
+
+.foot {
+  position: sticky;
+  bottom: var(--pad);
+  align-self: end;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.credit {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+.credit p {
+  margin: 0;
+}
+
+.credit a {
+  color: var(--text);
+  font-weight: 600;
+  text-decoration-color: var(--accent);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
 }
 
 .mark {
   display: block;
+  flex: none;
   width: 88px;
   height: 88px;
   margin: 0 0 28px;
@@ -118,16 +196,6 @@ a {
 
 .mark-tile {
   fill: var(--logo-bg);
-}
-
-/* The W is cut out of the web, so the cut matches the tile. */
-.mark .ko-f {
-  fill: var(--logo-bg);
-  stroke: var(--logo-bg);
-}
-
-.mark .ko-s {
-  stroke: var(--logo-bg);
 }
 
 /* "web" in the text colour, "thinking" stepping from orange to violet. */
@@ -148,7 +216,7 @@ h1 {
 }
 
 .pitch {
-  max-width: 16ch;
+  max-width: 15ch;
   margin: 14px 0 0;
   font-size: clamp(1.35rem, 2.2vw, 1.7rem);
   line-height: 1.2;
@@ -156,31 +224,19 @@ h1 {
   color: var(--muted);
 }
 
-.maker {
-  margin: 28px 0 0;
-  font-size: 15px;
-  color: var(--muted);
-}
-
-.maker a {
-  color: var(--text);
-  font-weight: 600;
-  text-decoration-color: var(--accent);
-  text-decoration-thickness: 2px;
-  text-underline-offset: 4px;
-}
-
 /* ---------- Theme switch ---------- */
 
 .theme {
   display: inline-flex;
-  margin-top: 28px;
   padding: 3px;
   border: 1px solid var(--line);
   border-radius: 999px;
 }
 
 .theme button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   min-height: 36px;
   padding: 6px 14px;
   border: 0;
@@ -201,6 +257,18 @@ h1 {
 .theme button[aria-pressed="true"] {
   background: var(--text);
   color: var(--bg);
+}
+
+/* Wide screens show the words; narrow ones swap them for icons. */
+.theme .ico {
+  display: none;
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 /* The switch needs JavaScript, and so does remembering the choice. */
@@ -283,34 +351,35 @@ html:not(.js) .theme {
   padding-bottom: clamp(20px, 2.4vw, 28px);
 }
 
-.tile-link {
-  grid-column: span 6;
-}
-
-.game {
-  margin: 0;
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--accent);
-}
-
+/* The app's name is the tile's headline. */
 .tile h2 {
-  margin: 6px 0 6px;
-  font-size: clamp(1.6rem, 2.4vw, 2rem);
+  margin: 0;
+  font-size: clamp(2rem, 3.4vw, 2.75rem);
   font-weight: 700;
-  line-height: 1.05;
-  letter-spacing: -0.035em;
+  line-height: 1;
+  letter-spacing: -0.045em;
+}
+
+.tile-feature h2 {
+  font-size: clamp(2.4rem, 4.6vw, 3.6rem);
 }
 
 .tile p {
   margin: 0;
 }
 
-.tile-text > p:not(.game):not(.actions) {
+.tile-text > p:not(.actions) {
   max-width: 34ch;
+  margin-top: 12px;
+  font-size: clamp(1.05rem, 1.5vw, 1.2rem);
   color: var(--muted);
+}
+
+.tile-text > p a {
+  color: var(--text);
+  text-decoration-color: var(--accent);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
 }
 
 .actions {
@@ -339,12 +408,6 @@ html:not(.js) .theme {
   transform: translateX(3px);
 }
 
-.src {
-  color: var(--muted);
-  font-size: 15px;
-  text-underline-offset: 4px;
-}
-
 /* Screenshots sit at the bottom of their tile, cropped by the tile's edge. */
 .shot {
   flex: 1;
@@ -353,6 +416,8 @@ html:not(.js) .theme {
   justify-content: center;
   margin: 24px calc(-1 * clamp(20px, 2.4vw, 28px)) calc(-1 * clamp(20px, 2.4vw, 28px));
   padding: 0 clamp(20px, 2.4vw, 28px);
+  /* A shade of its own, lighter than the page, so the screenshots sit apart
+     from it without looking sunk into the tile. */
   background: var(--tile-2);
   min-height: 220px;
 }
@@ -388,47 +453,11 @@ html:not(.js) .theme {
   transform: translateY(-4px);
 }
 
-.tile-link {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 8px 18px;
-  text-decoration: none;
-  background: var(--text);
-  color: var(--bg);
-  border-color: var(--text);
-}
-
-.tile-link .game {
-  color: inherit;
-  opacity: 0.7;
-}
-
-.link-title {
-  font-size: clamp(1.3rem, 2vw, 1.6rem);
-  font-weight: 700;
-  letter-spacing: -0.03em;
-}
-
-.foot {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 0 clamp(20px, 4vw, 56px) 40px;
-  font-size: 14px;
-  color: var(--muted);
-}
-
-.foot p {
-  margin: 0;
-}
-
 /* ---------- Narrow screens ---------- */
 
 @media (max-width: 1100px) {
   .tile-tall,
-  .tile-wide,
-  .tile-link {
+  .tile-wide {
     grid-column: span 6;
     grid-row: auto;
   }
@@ -449,17 +478,96 @@ html:not(.js) .theme {
   }
 }
 
-@media (max-width: 860px) {
-  .page {
-    grid-template-columns: minmax(0, 1fr);
+/* A short window gets a smaller name, so the panel's top and bottom
+   never meet. */
+@media (min-width: 861px) and (max-height: 640px) {
+  .mark {
+    width: 56px;
+    height: 56px;
+    margin-bottom: 16px;
   }
 
-  .intro {
-    position: static;
+  h1 {
+    font-size: 2.6rem;
   }
 
   .pitch {
-    max-width: 22ch;
+    margin-top: 8px;
+    font-size: 1.2rem;
+  }
+}
+
+/* Without room for the panel, the name becomes a header over the tiles,
+   and the theme switch and credits follow them. */
+@media (max-width: 860px) {
+  .page {
+    grid-template-columns: minmax(0, 1fr);
+    gap: clamp(24px, 3.6vw, 44px);
+  }
+
+  .intro,
+  .shelf,
+  .foot {
+    grid-column: 1;
+    grid-row: auto;
+  }
+
+  .intro,
+  .foot {
+    position: static;
+  }
+
+  .web {
+    display: none;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    min-width: 0;
+  }
+
+  .mark {
+    width: 60px;
+    height: 60px;
+    margin: 0;
+  }
+
+  h1 {
+    font-size: clamp(2.3rem, 5vw, 2.8rem);
+  }
+
+  .pitch {
+    max-width: none;
+    margin-top: 6px;
+    font-size: 1.1rem;
+  }
+
+  .foot {
+    padding-top: 8px;
+  }
+}
+
+/* Phones show the theme switch as icons. */
+@media (max-width: 760px) {
+  .theme button {
+    min-width: 44px;
+    padding: 6px 12px;
+  }
+
+  .theme .ico {
+    display: block;
+  }
+
+  /* Hidden from sight, still read out as the button's name. */
+  .theme .label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
   }
 }
 
@@ -478,8 +586,7 @@ html:not(.js) .theme {
     color: CanvasText;
   }
 
-  .go,
-  .tile-link {
+  .go {
     border: 1px solid ButtonText;
   }
 }
