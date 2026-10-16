@@ -23,6 +23,12 @@ for (const page of pages) {
 const config = readFileSync(join(root, 'wrangler.jsonc'), 'utf8');
 if (!/"name":\s*"webthinking-tools"/.test(config)) problems.push('wrangler.jsonc: the Worker is not named webthinking-tools');
 
+const version = readFileSync(join(root, 'VERSION'), 'utf8').trim();
+if (!/^\d+\.\d+\.\d+$/.test(version)) problems.push(`VERSION: "${version}" is not X.Y.Z`);
+if (!readFileSync(join(root, 'index.html'), 'utf8').includes(`<span id="version">v${version}</span>`)) {
+  problems.push(`index.html: the footer does not show v${version}`);
+}
+
 if (problems.length) {
   console.error(problems.map((p) => `✘ ${p}`).join('\n'));
   process.exit(1);

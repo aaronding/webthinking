@@ -1,20 +1,18 @@
-# Deploys the site to Cloudflare. A push to main goes live on webthinking.io; a push to any
-# other branch uploads a version with its own preview URL and leaves the live site alone.
+# Checks every push, and uploads a version with its own preview URL for any branch but main.
+# The live site is only deployed by the Release workflow (release.yml).
 #
 # It needs two repository secrets: CLOUDFLARE_API_TOKEN, a token made from Cloudflare's
 # "Edit Cloudflare Workers" template, and CLOUDFLARE_ACCOUNT_ID.
-name: Deploy
-run-name: ${{ github.ref_name == 'main' && 'Deploy to webthinking.io' || format('Preview {0}', github.ref_name) }}
+name: Preview
+run-name: Preview ${{ github.ref_name }}
 
 on:
   push:
-  workflow_dispatch:
 
-# One run per branch. A newer push to a branch replaces its running preview, but a
-# deploy to main is never cancelled halfway.
+# One run per branch. A newer push to a branch replaces its running preview.
 concurrency:
-  group: deploy-${{ github.ref }}
-  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+  group: preview-${{ github.ref }}
+  cancel-in-progress: true
 
 permissions:
   contents: read
@@ -75,34 +73,3 @@ jobs:
           if [ -n "$pr" ]; then
             gh pr comment "$pr" --body "Preview: $URL"
           fi
-
-  deploy:
-    name: Deploy to webthinking.io
-    needs: check
-    if: github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    environment:
-      name: webthinking.io
-      url: https://webthinking.io
-    steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-node@v7
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-      - name: Deploy
-        env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-        run: npx wrangler@4 deploy
-      - name: Check the live site
-        run: |
-          for i in 1 2 3 4 5 6; do
-            if curl -fsS https://webthinking.io/ | grep -q '<title>webthinking'; then
-              echo 'webthinking.io is serving the site'
-              exit 0
-            fi
-            sleep 5
-          done
-          echo '::error::webthinking.io did not serve the site after the deploy'
-          exit 1
