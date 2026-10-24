@@ -336,12 +336,20 @@ html:not(.js) .theme {
   flex-direction: column;
 }
 
+/* The text column widens for a name too long to fit it, at the screenshot's
+   expense, so the headline never runs into the screenshot. */
 .tile-feature {
   grid-column: span 6;
   display: grid;
-  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  grid-template-columns: minmax(min-content, 0.8fr) minmax(0, 1.2fr);
   gap: clamp(20px, 3vw, 40px);
   align-items: center;
+}
+
+/* PadBench comes second in the page, as it does when the cards stack, but
+   wide screens show it last, so its wide card and ReadSooner's sit apart. */
+.tile-end {
+  order: 1;
 }
 
 .tile-feature .shot {
@@ -449,6 +457,34 @@ html:not(.js) .theme {
   box-shadow: var(--shadow);
 }
 
+/* ReadSooner: the Inbox on a computer, running off the tile's right and
+   bottom edges, and an article on a phone in front of it. */
+.tile .shot-duo {
+  position: relative;
+  overflow: hidden;
+  justify-content: flex-end;
+  padding: 36px 0 0 clamp(20px, 2.4vw, 28px);
+}
+
+.shot-duo .duo-screen {
+  width: 90%;
+  border-radius: 12px 0 0 0;
+  box-shadow: var(--shadow);
+}
+
+/* Lowered by a third of its height, so it starts below the computer's top. */
+.shot-duo .duo-phone {
+  position: absolute;
+  bottom: 0;
+  left: 7%;
+  width: 30%;
+  translate: 0 33%;
+  border: 6px solid var(--text);
+  border-bottom: 0;
+  border-radius: 28px 28px 0 0;
+  box-shadow: var(--shadow);
+}
+
 .tile:hover .shot img {
   transform: translateY(-4px);
 }
@@ -460,6 +496,10 @@ html:not(.js) .theme {
   .tile-wide {
     grid-column: span 6;
     grid-row: auto;
+  }
+
+  .tile-end {
+    order: 0;
   }
 
   .tile-feature {
