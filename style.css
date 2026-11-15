@@ -336,6 +336,18 @@ html:not(.js) .theme {
   flex-direction: column;
 }
 
+/* PadBench and Rigscope share a row. Their screenshots, the same size, sit
+   at the bottom, so they line up whichever description runs longer. */
+.tile-half {
+  grid-column: span 3;
+  display: flex;
+  flex-direction: column;
+}
+
+.tile-half .shot-screen {
+  align-items: flex-end;
+}
+
 /* The text column widens for a name too long to fit it, at the screenshot's
    expense, so the headline never runs into the screenshot. */
 .tile-feature {
@@ -347,7 +359,7 @@ html:not(.js) .theme {
 }
 
 /* PadBench comes second in the page, as it does when the cards stack, but
-   wide screens show it last, so its wide card and ReadSooner's sit apart. */
+   wide screens show it in the last row, beside Rigscope. */
 .tile-end {
   order: 1;
 }
@@ -410,6 +422,18 @@ html:not(.js) .theme {
   font-weight: 600;
   text-decoration: none;
   transition: transform 0.2s ease;
+}
+
+/* In place of the button, for an app that isn't out yet. */
+.soon {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 10px 20px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--muted);
+  font-weight: 600;
 }
 
 .go:hover {
@@ -493,7 +517,8 @@ html:not(.js) .theme {
 
 @media (max-width: 1100px) {
   .tile-tall,
-  .tile-wide {
+  .tile-wide,
+  .tile-half {
     grid-column: span 6;
     grid-row: auto;
   }
@@ -513,6 +538,7 @@ html:not(.js) .theme {
 
   .tile-tall .shot,
   .tile-wide .shot,
+  .tile-half .shot,
   .tile-feature .shot {
     min-height: 0;
   }
