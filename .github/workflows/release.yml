@@ -1,0 +1,115 @@
+# Releases the site, started by hand from the Actions tab on main: runs the checks, deploys to
+# webthinking.io, then bumps the version (VERSION and the footer in index.html), commits it and
+# tags it vX.Y.Z. It deploys before it pushes the version and the tag, so a run that fails before
+# the push leaves nothing behind but the deploy, and the next run releases the same version.
+#
+# It needs two repository secrets: CLOUDFLARE_API_TOKEN, a token made from Cloudflare's
+# "Edit Cloudflare Workers" template, and CLOUDFLARE_ACCOUNT_ID.
+name: Release
+run-name: Release ${{ inputs.bump }} to webthinking.io
+
+on:
+  workflow_dispatch:
+    inputs:
+      bump:
+        description: 'Version bump: fix (0.1.0 to 0.1.1), minor (0.2.0) or major (1.0.0).'
+        type: choice
+        options: [fix, minor, major]
+        default: fix
+
+# One release at a time, and none cancelled halfway.
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+env:
+  NODE_VERSION: '24'
+
+jobs:
+  check:
+    name: Check the site
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - run: node --check worker.js
+      - run: node --check scripts/version.mjs
+      - run: node scripts/check.mjs
+
+  release:
+    name: Deploy, bump the version and tag
+    needs: check
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    environment:
+      name: webthinking.io
+      url: https://webthinking.io
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+      - uses: actions/setup-node@v7
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Choose the version
+        id: version
+        env:
+          BUMP: ${{ inputs.bump }}
+        run: |
+          version=$(node scripts/version.mjs "$BUMP")
+          if git rev-parse -q --verify "refs/tags/v$version" >/dev/null; then
+            echo "::error::v$version is already tagged"
+            exit 1
+          fi
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "Releasing v$version ($BUMP)" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Deploy
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: npx wrangler@4 deploy
+
+      - name: Check the live site
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          for i in 1 2 3 4 5 6; do
+            if curl -fsS https://webthinking.io/ | grep -q "<span id=\"version\">v$VERSION</span>"; then
+              echo "webthinking.io is serving v$VERSION"
+              exit 0
+            fi
+            sleep 5
+          done
+          echo "::error::webthinking.io did not serve v$VERSION after the deploy"
+          exit 1
+
+      # The commit and the tag are made by the person who started the run.
+      - name: Commit the version, and tag it
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+          ACTOR: ${{ github.actor }}
+          ACTOR_ID: ${{ github.actor_id }}
+        run: |
+          git config user.name "$ACTOR"
+          git config user.email "$ACTOR_ID+$ACTOR@users.noreply.github.com"
+          git commit VERSION index.html -m "Release $VERSION" \
+            -m "The Release workflow checked the commit before this one, deployed this version to webthinking.io and tagged it v$VERSION."
+          git tag -a "v$VERSION" -m "Version $VERSION"
+
+      # Atomic, so the commit and its tag land together, or neither does when main has moved on.
+      - name: Push the version and the tag
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: git push --atomic origin HEAD:main "v$VERSION"
