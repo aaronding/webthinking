@@ -1,0 +1,398 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Aaron Ding · webthinking.io</title>
+  <meta name="description" content="Aaron Ding. What I play, and the tools I build because I wanted them and couldn’t find them.">
+  <meta name="theme-color" content="#05060a">
+  <meta name="color-scheme" content="dark">
+  <link rel="canonical" href="https://webthinking.io/me/">
+
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://webthinking.io/me/">
+  <meta property="og:title" content="Aaron Ding · webthinking.io">
+  <meta property="og:description" content="What I play, and the tools I build because I wanted them and couldn’t find them.">
+  <meta property="og:image" content="https://webthinking.io/me/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="icon" href="/me/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/me/apple-touch-icon.png">
+  <link rel="preload" href="/fonts/space-grotesk.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/jetbrains-mono.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/me/site.css">
+  <script>document.documentElement.classList.add('js')</script>
+  <script src="/me/site.js" defer></script>
+</head>
+<body>
+  <canvas class="field" aria-hidden="true"></canvas>
+  <div class="spotlight" aria-hidden="true"></div>
+  <div class="scanlines" aria-hidden="true"></div>
+
+  <a class="skip" href="#offduty">Skip to hobbies</a>
+
+  <header class="hud">
+    <a class="brand" href="/" aria-label="webthinking.io, all the tools">
+      <span class="brand-mark" aria-hidden="true">&gt;_</span>
+      <span class="brand-name">webthinking.io</span>
+    </a>
+    <nav class="tabs" aria-label="Sections">
+      <a class="tab" href="#offduty"><i class="ft ft-js" aria-hidden="true"></i>off-duty<span class="ext" aria-hidden="true">.js</span></a>
+      <a class="tab" href="#builds"><i class="ft ft-dir" aria-hidden="true"></i>builds<span class="ext" aria-hidden="true">/</span></a>
+      <a class="tab" href="#workshop"><i class="ft ft-sh" aria-hidden="true"></i>workshop<span class="ext" aria-hidden="true">.sh</span></a>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="hero" aria-labelledby="name">
+      <div class="hero-inner">
+        <p class="boot" aria-hidden="true">
+          <span class="boot-prompt">aaron@webthinking:~$</span>
+          <span class="boot-cmd" data-type="whoami">whoami</span><span class="caret"></span>
+        </p>
+
+        <p class="kicker">Software builder</p>
+        <div class="name-wrap">
+          <h1 class="name" id="name"><span class="name-text">Aaron Ding</span></h1>
+          <span class="name-ghost ghost-a" aria-hidden="true">Aaron Ding</span>
+          <span class="name-ghost ghost-b" aria-hidden="true">Aaron Ding</span>
+        </div>
+        <p class="tagline">I build the tools I wanted and couldn’t find.</p>
+
+        <p class="hero-cta">
+          <a class="btn btn-primary" href="#builds">See the builds</a>
+          <a class="btn btn-ghost" href="https://github.com/aaronding">GitHub <span aria-hidden="true">↗</span></a>
+        </p>
+
+        <dl class="readout">
+          <div class="readout-cell">
+            <dt>Builds shipped</dt>
+            <dd data-scramble="digits">5</dd>
+            <dd class="readout-src"><a href="#builds"><span aria-hidden="true">//&nbsp;</span>see builds/&nbsp;<span aria-hidden="true">↓</span></a></dd>
+          </div>
+          <div class="readout-cell">
+            <dt>Oldest still shipping</dt>
+            <dd data-scramble="digits">2006</dd>
+            <dd class="readout-src"><a href="https://github.com/aaronding/ScorpionSolitaire/blob/8ff4f1d/src/com/family/solitaire/model/Card.java#L4"><span aria-hidden="true">// </span>Card.java:4&nbsp;<span aria-hidden="true">↗</span></a></dd>
+          </div>
+          <div class="readout-cell">
+            <dt>FreeCell win streak</dt>
+            <dd data-scramble="digits">100</dd>
+            <dd class="readout-src"><span aria-hidden="true">//&nbsp;</span>no repo for this one. trust me.</dd>
+          </div>
+        </dl>
+
+        <div class="monitor" aria-hidden="true">
+          <div class="monitor-screen">
+            <div class="term">
+              <div class="term-pane term-top">
+<pre class="term-meters" data-mon-meters><span class="mk">fps </span>[                  --]
+<span class="mk">scrl</span>[                  --]
+
+<span class="mk">Tasks:</span> 6, 4 running
+<span class="mk">Uptime:</span> since 2006
+<span class="mk">Session:</span> --:--:--</pre>
+<pre class="term-procs"><span class="term-head">  PID S COMMAND                    </span>
+ <span class="tp">2026</span> <span class="tr">R</span> readsooner
+ <span class="tp">2026</span> <span class="tr">R</span> padbench
+ <span class="tp">2026</span> <span class="ts">S</span> rigscope <span class="tf">--soon</span>
+ <span class="tp">2025</span> <span class="tr">R</span> gcwind
+ <span class="tp">2016</span> <span class="ts">S</span> maze
+ <span class="tp">2006</span> <span class="tr">R</span> ScorpionSolitaire</pre>
+              </div>
+              <div class="term-pane term-tail">
+                <p class="term-cmd"><span class="term-prompt">$</span> tail -f ~/webthinking.log</p>
+                <ol class="mon-log" data-mon-log></ol>
+              </div>
+            </div>
+            <p class="term-status"><span>[wt] 0:htop  1:tail*</span><span>aaron@webthinking <span data-mon-clock></span></span></p>
+          </div>
+        </div>
+      </div>
+      <div class="horizon" aria-hidden="true"></div>
+    </section>
+
+    <section class="section" id="offduty" aria-labelledby="offduty-title">
+      <p class="label" aria-hidden="true"><span class="label-num">01</span><span data-scramble>// off-duty</span></p>
+      <h2 id="offduty-title" class="reveal">Many hobbies. Guess which I’m good at.</h2>
+
+      <figure class="src src-offduty reveal" data-label="off-duty.js source">
+        <figcaption class="src-head">
+          <span class="src-file"><i class="ft ft-js" aria-hidden="true"></i><span>off-duty<span class="src-dir">.js</span></span></span>
+          <span class="src-meta">// self-reported</span>
+        </figcaption>
+        <div class="src-body"><code class="src-code src-gutter">
+          <span class="l"><span class="kw">export</span> <span class="kw">default</span> <span class="p">{</span></span>
+          <span class="l">  <span class="k">cello</span><span class="p">:</span> <span class="n">2</span><span class="p">,</span></span>
+          <span class="l">  <span class="k">golf</span><span class="p">:</span> <span class="n">3</span><span class="p">,</span></span>
+          <span class="l">  <span class="k">goKarting</span><span class="p">:</span> <span class="n">4</span><span class="p">,</span></span>
+          <span class="l">  <span class="k">sudoku</span><span class="p">:</span> <span class="n">7</span><span class="p">,</span></span>
+          <span class="l">  <span class="c">// 100 games in a row without a loss</span></span>
+          <span class="l">  <span class="k">freeCell</span><span class="p">:</span> <span class="s">'max'</span><span class="p">,</span></span>
+          <span class="l">  <span class="k">streetFighter6</span><span class="p">:</span> <span class="n">8</span><span class="p">,</span></span>
+          <span class="l">  <span class="c">// the real boss of the house</span></span>
+          <span class="l">  <span class="k">dog</span><span class="p">:</span> <span class="s">'Dobermann'</span><span class="p">,</span></span>
+          <span class="l"><span class="p">};</span></span>
+        </code></div>
+      </figure>
+    </section>
+
+    <section class="section" id="builds" aria-labelledby="builds-title">
+      <p class="label" aria-hidden="true"><span class="label-num">02</span><span data-scramble>// builds</span></p>
+      <h2 id="builds-title" class="reveal">Things I built because I wanted them my way</h2>
+
+      <div class="builds">
+        <article class="build reveal" id="readsooner" aria-labelledby="readsooner-title">
+          <div class="build-media">
+            <div class="window">
+              <div class="window-bar" aria-hidden="true"><i></i><i></i><i></i><span>readsooner.com</span></div>
+              <img src="/img/readsooner-dark.jpg" width="1280" height="853" loading="lazy" decoding="async"
+                   alt="ReadSooner's Inbox on a computer: saved articles in English, French and Chinese, each with a one-sentence summary under its title.">
+            </div>
+          </div>
+          <div class="build-body">
+            <h3 id="readsooner-title">ReadSooner</h3>
+            <p class="build-hook">Save it for later. Get the gist now.</p>
+            <p>I was a Pocket user, and I saved more articles than I ever read. When Pocket closed, I built my own read-later app. It hands each article back with a short AI summary first, written in the article’s own language, and I can tell which ones deserve the full read.</p>
+            <div class="src src-note">
+              <div class="src-body"><code class="src-code">
+                <span class="l"><span class="c">// builds/ReadSooner</span></span>
+                <span class="l"><span class="p">{</span></span>
+                <span class="l">  <span class="k">status</span><span class="p">:</span> <span class="st st-live"><i class="st-dot" aria-hidden="true"></i>'live'</span><span class="p">,</span></span>
+                <span class="l">  <span class="k">stack</span><span class="p">: [</span><span class="arr"><span class="ai"><span class="s">'Next.js'</span><span class="p">, </span></span><span class="ai"><span class="s">'TypeScript'</span><span class="p">, </span></span><span class="ai"><span class="s">'Postgres'</span><span class="p">, </span></span><span class="ai"><span class="s">'Claude API'</span><span class="p tc">,</span></span></span><span class="arr-end p">],</span></span>
+                <span class="l"><span class="p">}</span></span>
+              </code></div>
+            </div>
+            <p class="build-links">
+              <a class="btn btn-primary" href="https://www.readsooner.com/">Open ReadSooner <span aria-hidden="true">↗</span></a>
+              <a class="btn btn-ghost" href="https://github.com/aaronding/read-later">Source <span aria-hidden="true">↗</span></a>
+            </p>
+          </div>
+        </article>
+
+        <article class="build reveal" id="padbench" aria-labelledby="padbench-title">
+          <div class="build-media">
+            <div class="window">
+              <div class="window-bar" aria-hidden="true"><i></i><i></i><i></i><span>padbench.com</span></div>
+              <img src="/img/padbench-dark.jpg" width="1280" height="800" loading="lazy" decoding="async"
+                   alt="PadBench showing a controller with its buttons, sticks, polling rate and motion tests.">
+            </div>
+          </div>
+          <div class="build-body">
+            <h3 id="padbench-title">PadBench</h3>
+            <p class="build-hook">Is it the controller, or is it me?</p>
+            <p>The testers I tried couldn’t check some features of my DualSense, so I built my own. PadBench checks any controller for stick drift, button chatter and polling rate, and goes on to motion, vibration, lights and adaptive triggers.</p>
+            <div class="src src-note">
+              <div class="src-body"><code class="src-code">
+                <span class="l"><span class="c">// builds/padbench</span></span>
+                <span class="l"><span class="p">{</span></span>
+                <span class="l">  <span class="k">status</span><span class="p">:</span> <span class="st st-live"><i class="st-dot" aria-hidden="true"></i>'live'</span><span class="p">,</span></span>
+                <span class="l">  <span class="k">stack</span><span class="p">: [</span><span class="arr"><span class="ai"><span class="s">'Svelte'</span><span class="p">, </span></span><span class="ai"><span class="s">'Rust'</span><span class="p">, </span></span><span class="ai"><span class="s">'Tauri'</span><span class="p tc">,</span></span></span><span class="arr-end p">],</span></span>
+                <span class="l"><span class="p">}</span></span>
+              </code></div>
+            </div>
+            <p class="build-links">
+              <a class="btn btn-primary" href="https://padbench.com/">Test your controller <span aria-hidden="true">↗</span></a>
+            </p>
+          </div>
+        </article>
+
+        <article class="build reveal" id="rigscope" aria-labelledby="rigscope-title">
+          <div class="build-media">
+            <div class="window">
+              <div class="window-bar" aria-hidden="true"><i></i><i></i><i></i><span>rigscope.exe</span></div>
+              <img src="/img/rigscope-dark.jpg" width="1280" height="800" loading="lazy" decoding="async"
+                   alt="Rigscope's PC page: CPU, GPU, memory and battery at a glance, and CPU and GPU use over the last two minutes.">
+            </div>
+          </div>
+          <div class="build-body">
+            <h3 id="rigscope-title">Rigscope</h3>
+            <p class="build-hook">Why did that session run badly?</p>
+            <p>A lightweight hardware monitor for Windows gaming PCs. It logs how each game runs, session by session, and explains a bad one: heat, an update or background load.</p>
+            <div class="src src-note">
+              <div class="src-body"><code class="src-code">
+                <span class="l"><span class="c">// builds/rigscope</span></span>
+                <span class="l"><span class="p">{</span></span>
+                <span class="l">  <span class="k">status</span><span class="p">:</span> <span class="st st-beta"><i class="st-dot" aria-hidden="true"></i>'coming soon to Steam'</span><span class="p">,</span></span>
+                <span class="l">  <span class="k">stack</span><span class="p">: [</span><span class="arr"><span class="ai"><span class="s">'Rust'</span><span class="p">, </span></span><span class="ai"><span class="s">'C#'</span><span class="p">, </span></span><span class="ai"><span class="s">'WinUI 3'</span><span class="p">, </span></span><span class="ai"><span class="s">'SQLite'</span><span class="p tc">,</span></span></span><span class="arr-end p">],</span></span>
+                <span class="l"><span class="p">}</span></span>
+              </code></div>
+            </div>
+          </div>
+        </article>
+
+        <article class="build reveal" aria-labelledby="gcwind-title">
+          <div class="build-media">
+            <div class="phone">
+              <img src="/img/gcwind-dark.jpg" width="860" height="1200" loading="lazy" decoding="async"
+                   alt="gcwind on a phone: the Driver tab, The Rocket at level 10, and a wind speed of 10.0.">
+            </div>
+          </div>
+          <div class="build-body">
+            <h3 id="gcwind-title">gcwind</h3>
+            <p class="build-hook">How many rings to aim off, answered one-handed.</p>
+            <p>A wind calculator for Golf Clash. Pick a club and level, dial in the wind, adjust for power ball, elevation and distance, and it gives you the rings. Built for a thumb on a phone mid-match, with the club data checked in CI on every push.</p>
+            <div class="src src-note">
+              <div class="src-body"><code class="src-code">
+                <span class="l"><span class="c">// builds/gcwind</span></span>
+                <span class="l"><span class="p">{</span></span>
+                <span class="l">  <span class="k">status</span><span class="p">:</span> <span class="st st-live"><i class="st-dot" aria-hidden="true"></i>'live'</span><span class="p">,</span></span>
+                <span class="l">  <span class="k">years</span><span class="p">:</span> <span class="s">'2025–2026'</span><span class="p">,</span></span>
+                <span class="l">  <span class="k">stack</span><span class="p">: [</span><span class="arr"><span class="ai"><span class="s">'JavaScript'</span><span class="p">, </span></span><span class="ai"><span class="s">'CSS'</span><span class="p">, </span></span><span class="ai"><span class="s">'GitHub Actions'</span><span class="p tc">,</span></span></span><span class="arr-end p">],</span></span>
+                <span class="l"><span class="p">}</span></span>
+              </code></div>
+            </div>
+            <p class="build-links">
+              <a class="btn btn-primary" href="https://gcwind.webthinking.io/">Open the app <span aria-hidden="true">↗</span></a>
+              <a class="btn btn-ghost" href="https://github.com/aaronding/gcwind">Source <span aria-hidden="true">↗</span></a>
+            </p>
+          </div>
+        </article>
+
+        <article class="build reveal" id="scorpion" aria-labelledby="scorpion-title">
+          <div class="build-media">
+            <div class="window">
+              <div class="window-bar" aria-hidden="true"><i></i><i></i><i></i><span>scorpion.solitaire</span></div>
+              <img src="/img/scorpion.jpg" width="1200" height="639" loading="lazy" decoding="async"
+                   alt="A game of Scorpion Solitaire in progress: seven columns of cards on green felt, several already built down in suit.">
+            </div>
+          </div>
+          <div class="build-body">
+            <h3 id="scorpion-title">Scorpion Solitaire</h3>
+            <p class="build-hook">Written in 2006. <span class="nowrap">Rebuilt in 2026.</span> <span class="nowrap">Every deal can be won.</span></p>
+            <p>I play a lot of solitaire, so I wrote my own in Java Swing. Twenty years later I rebuilt it for the desktop and the browser. A solver shuffles until the deal is winnable, and both versions replay the same rules recording, so a game number deals the same cards in either one.</p>
+            <div class="src src-note">
+              <div class="src-body"><code class="src-code">
+                <span class="l"><span class="c">// builds/ScorpionSolitaire</span></span>
+                <span class="l"><span class="p">{</span></span>
+                <span class="l">  <span class="k">status</span><span class="p">:</span> <span class="st st-legacy"><i class="st-dot" aria-hidden="true"></i>'since 2006'</span><span class="p">,</span></span>
+                <span class="l">  <span class="k">rebuilt</span><span class="p">:</span> <span class="n">2026</span><span class="p">,</span></span>
+                <span class="l">  <span class="k">stack</span><span class="p">: [</span><span class="arr"><span class="ai"><span class="s">'Java Swing'</span><span class="p">, </span></span><span class="ai"><span class="s">'TypeScript'</span><span class="p">, </span></span><span class="ai"><span class="s">'Vite'</span><span class="p">, </span></span><span class="ai"><span class="s">'Vitest'</span><span class="p tc">,</span></span></span><span class="arr-end p">],</span></span>
+                <span class="l"><span class="p">}</span></span>
+              </code></div>
+            </div>
+            <p class="build-links">
+              <a class="btn btn-primary" href="/ScorpionSolitaire/">Play in your browser <span aria-hidden="true">↗</span></a>
+              <a class="btn btn-ghost" href="https://github.com/aaronding/ScorpionSolitaire">Source <span aria-hidden="true">↗</span></a>
+            </p>
+          </div>
+        </article>
+
+        <article class="build build-maze reveal" aria-labelledby="maze-title">
+          <div class="build-body">
+            <h3 id="maze-title">maze</h3>
+            <p class="build-hook">A mouse, a maze and a stack.</p>
+            <p>A mouse maps every corridor of a maze using depth-first search, backtracking out of dead ends and noting each exit. The original draws it in your terminal. It began in 2016 as a recursive solver; now it keeps an explicit stack, so every step can be drawn. The one on this page is a browser port, and the code under it is the function that’s running.</p>
+            <div class="src src-note">
+              <div class="src-body"><code class="src-code">
+                <span class="l"><span class="c">// builds/maze</span></span>
+                <span class="l"><span class="p">{</span></span>
+                <span class="l">  <span class="k">status</span><span class="p">:</span> <span class="st st-code"><i class="st-dot" aria-hidden="true"></i>'open source'</span><span class="p">,</span></span>
+                <span class="l">  <span class="k">years</span><span class="p">:</span> <span class="s">'2016–2026'</span><span class="p">,</span></span>
+                <span class="l">  <span class="k">stack</span><span class="p">: [</span><span class="arr"><span class="ai"><span class="s">'Node.js'</span><span class="p">, </span></span><span class="ai"><span class="s">'JavaScript'</span><span class="p">, </span></span><span class="ai"><span class="s">'Jest'</span><span class="p tc">,</span></span></span><span class="arr-end p">],</span></span>
+                <span class="l"><span class="p">}</span></span>
+              </code></div>
+            </div>
+            <p class="build-links">
+              <a class="btn btn-ghost" href="https://github.com/aaronding/maze">Source <span aria-hidden="true">↗</span></a>
+            </p>
+          </div>
+          <div class="build-media">
+            <figure class="maze">
+              <canvas class="maze-canvas" width="600" height="380" role="img"
+                      aria-label="A mouse explores a randomly generated maze with depth-first search, backtracking out of dead ends and marking each exit it finds."></canvas>
+              <figcaption class="maze-legend">
+                <span><i class="key key-path"></i>Path</span>
+                <span><i class="key key-dead"></i>Dead end</span>
+                <span><i class="key key-exit"></i>Exit</span>
+              </figcaption>
+            </figure>
+            <figure class="src src-trace" data-label="stepMouse() source">
+              <figcaption class="src-head">
+                <span class="src-file"><i class="ft ft-js" aria-hidden="true"></i><span><span class="src-dir">js/</span>site.js <span class="src-dir" aria-hidden="true">›</span> stepMouse()</span></span>
+                <span class="src-meta" data-maze-meta></span>
+              </figcaption>
+              <div class="src-body"><code class="src-code src-gutter" data-maze-code><span class="src-empty">// enable JavaScript to watch the solver run</span></code></div>
+              <div class="trace">
+                <p class="trace-rows">
+                  <span class="trace-at"><span class="trace-loc" data-trace-loc></span><span class="trace-stmt" data-trace-stmt></span></span>
+                  <span class="trace-state" data-trace-state></span>
+                  <span class="sr-only" role="status" data-maze-announce></span>
+                </p>
+                <p class="trace-ctl">
+                  <button type="button" class="ctl" data-maze-toggle>
+                    <svg class="ctl-pause" viewBox="0 0 12 12" aria-hidden="true"><rect x="2" y="1.5" width="2.6" height="9" rx="0.6"/><rect x="7.4" y="1.5" width="2.6" height="9" rx="0.6"/></svg>
+                    <svg class="ctl-play" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 1.6v8.8a.6.6 0 0 0 .9.5l7-4.4a.6.6 0 0 0 0-1L3.9 1.1a.6.6 0 0 0-.9.5z"/></svg>
+                    <span data-maze-toggle-label>Pause</span>
+                  </button>
+                  <button type="button" class="ctl" data-maze-step>
+                    <svg viewBox="0 0 12 12" aria-hidden="true"><path d="M1.5 1.6v8.8a.6.6 0 0 0 .9.5l6.1-4.4a.6.6 0 0 0 0-1L2.4 1.1a.6.6 0 0 0-.9.5z"/><rect x="8.6" y="1.5" width="2" height="9" rx="0.6"/></svg>
+                    <span>Step</span>
+                  </button>
+                </p>
+              </div>
+            </figure>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="workshop" aria-labelledby="workshop-title">
+      <p class="label" aria-hidden="true"><span class="label-num">03</span><span data-scramble>// workshop</span></p>
+      <h2 id="workshop-title" class="reveal">Not everything I tinker with is code</h2>
+
+      <ul class="bench">
+        <li class="directive reveal">
+          <span class="directive-num">Local AI</span>
+          <strong>Models that run at home</strong>
+          ComfyUI for images and LM Studio for language models, with nothing sent to the cloud.
+        </li>
+        <li class="directive reveal">
+          <span class="directive-num">Fightstick</span>
+          <strong>A custom GP2040-CE stick</strong>
+          RP2040 board, a Sanwa JLX lever with an octagonal gate, and button profiles I remapped myself.
+        </li>
+        <li class="directive reveal">
+          <span class="directive-num">Garage</span>
+          <strong>An 18-year-old BMW</strong>
+          I fix my own cars. This one has had its engine head opened up, by me.
+        </li>
+        <li class="directive reveal">
+          <span class="directive-num">Old hardware</span>
+          <strong>A Mac mini with a second life</strong>
+          Converted into a media center running Jellyfin.
+        </li>
+        <li class="directive reveal">
+          <span class="directive-num">Home network</span>
+          <strong>Wired, and often debugged</strong>
+          A managed PoE switch feeds the access points. Chasing packet loss is a hobby of its own.
+        </li>
+        <li class="directive reveal">
+          <span class="directive-num">DIY</span>
+          <strong>A fence I built myself</strong>
+          Handy with real tools too. Measure twice, cut once: there is no undo on lumber.
+        </li>
+      </ul>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p class="statusbar">
+      <span class="sb-branch"><svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="4.5" cy="3.5" r="1.8"/><circle cx="4.5" cy="12.5" r="1.8"/><circle cx="11.5" cy="5.5" r="1.8"/><path d="M4.5 5.3v5.4M11.5 7.3c0 2.6-2.4 3-5.6 4.1"/></svg>main</span>
+      <span class="sb-ver">v3</span>
+      <span class="sb-lang">HTML · CSS · JS</span>
+      <span>0 frameworks</span>
+      <span>0 trackers</span>
+      <span>0 cookies</span>
+      <span class="sb-end">UTF-8</span>
+      <span class="sb-eol">LF</span>
+    </p>
+    <div class="footer-meta">
+      <p class="changelog"><span aria-hidden="true">//&nbsp;</span>v1 2018 terminal&nbsp;· v2 2019 slide deck&nbsp;· <span class="now">v3 2026 this page</span></p>
+      <p>© 2026 Aaron Ding</p>
+    </div>
+  </footer>
+</body>
+</html>
