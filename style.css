@@ -323,7 +323,7 @@ html:not(.js) .theme {
   transform: translateY(-3px);
 }
 
-/* Scorpion Solitaire gets the larger share of the row, gcwind the narrower one. */
+/* PadBench gets the larger share of the row, gcwind the narrower one. */
 .tile-wide {
   grid-column: span 4;
   display: flex;
@@ -336,8 +336,8 @@ html:not(.js) .theme {
   flex-direction: column;
 }
 
-/* PadBench and Rigscope share a row. Their screenshots, the same size, sit
-   at the bottom, so they line up whichever description runs longer. */
+/* Scorpion Solitaire and Rigscope share a row. Their screenshots sit at the
+   bottom, so they line up whichever description runs longer. */
 .tile-half {
   grid-column: span 3;
   display: flex;
@@ -358,8 +358,7 @@ html:not(.js) .theme {
   align-items: center;
 }
 
-/* PadBench comes second in the page, as it does when the cards stack, but
-   wide screens show it in the last row, beside Rigscope. */
+/* The cards in the last row on wide screens: Scorpion Solitaire and Rigscope. */
 .tile-end {
   order: 1;
 }

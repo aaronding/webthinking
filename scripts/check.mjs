@@ -4,7 +4,7 @@ import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
 const root = new URL('..', import.meta.url).pathname;
-const pages = ['index.html', '404.html'];
+const pages = ['index.html', '404.html', 'me/index.html'];
 // These paths are passed through to the demos' own repos by worker.js.
 const proxied = /^\/(gcwind|ScorpionSolitaire)(\/|$)/;
 const problems = [];
