@@ -224,6 +224,33 @@ h1 {
   color: var(--muted);
 }
 
+/* Who made these, right under the pitch, linking to the bio page. */
+.by {
+  margin: 22px 0 0;
+  font-size: 1.05rem;
+  color: var(--muted);
+}
+
+.by a {
+  color: var(--text);
+  font-weight: 700;
+  white-space: nowrap;
+  text-decoration: underline;
+  text-decoration-color: var(--accent);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 5px;
+}
+
+.by a span {
+  display: inline-block;
+  color: var(--accent);
+  transition: transform 0.2s ease;
+}
+
+.by a:hover span {
+  transform: translateX(3px);
+}
+
 /* ---------- Theme switch ---------- */
 
 .theme {
@@ -586,16 +613,23 @@ html:not(.js) .theme {
     display: none;
   }
 
+  /* The logo sits on the name's line; the pitch and the author line run
+     the full width under them, flush with the logo's left edge. */
   .brand {
-    display: flex;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
     align-items: center;
-    gap: 14px;
+    column-gap: 12px;
     min-width: 0;
   }
 
+  .brand > div {
+    display: contents;
+  }
+
   .mark {
-    width: 60px;
-    height: 60px;
+    width: 48px;
+    height: 48px;
     margin: 0;
   }
 
@@ -603,10 +637,20 @@ html:not(.js) .theme {
     font-size: clamp(2.3rem, 5vw, 2.8rem);
   }
 
+  .pitch,
+  .by {
+    grid-column: 1 / -1;
+  }
+
   .pitch {
     max-width: none;
-    margin-top: 6px;
+    margin-top: 12px;
     font-size: 1.1rem;
+  }
+
+  .by {
+    margin-top: 8px;
+    font-size: 1rem;
   }
 
   .foot {
