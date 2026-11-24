@@ -251,6 +251,20 @@ h1 {
   transform: translateX(3px);
 }
 
+/* The source link sits right under the author line, a step quieter. */
+.by-src {
+  margin-top: 8px;
+  font-size: 0.875rem;
+}
+
+.by-src a {
+  font-weight: 600;
+}
+
+.by-src a:hover span {
+  transform: translate(2px, -2px);
+}
+
 /* ---------- Theme switch ---------- */
 
 .theme {
@@ -651,6 +665,11 @@ html:not(.js) .theme {
   .by {
     margin-top: 8px;
     font-size: 1rem;
+  }
+
+  .by-src {
+    margin-top: 4px;
+    font-size: 0.875rem;
   }
 
   .foot {
